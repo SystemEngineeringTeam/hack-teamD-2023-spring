@@ -17,7 +17,7 @@ public class OperateObj : MonoBehaviour{
     public async Task<GameObject> MakeSuggestionAsync(int index, string[] inputs){
         //プレハブフォルダからプレハブ生成(isrightがtrueなら右向き)
         string prefabName = "";
-        Vector3 pos = new Vector3(27f, 200f - index * 25, 0f);
+        Vector3 pos = new Vector3(27f, 180f - index * 25, 0f);
 
         //インデックスが奇数なら右向き
         if(index % 2 == 1){
@@ -36,10 +36,10 @@ public class OperateObj : MonoBehaviour{
 
         //InputTextの初期値を""にする
         SuggestObjManager returnObjManager = returnObj.GetComponent<SuggestObjManager>();
-        returnObjManager.inputField.text = "";
+        returnObjManager.inputField.text = "Now Loading...";
 
         Fetch fetch = new Fetch();
-        string[] suggestTexts = fetch.SyncQ(new string[]{"query1", "query2", "query3"});
+        string[] suggestTexts = await fetch.AsyncQ(new string[]{"query1", "query2", "query3"});
 
         //test用重い処理
         //TestHeavyClass testHeavy = new TestHeavyClass();
@@ -64,7 +64,7 @@ public class OperateObj : MonoBehaviour{
     //最初の一個目用オーバーロード
     public GameObject MakeSuggestionAsync(int index){
         //プレハブフォルダからプレハブ生成(isrightがtrueなら右向き)
-        Vector3 pos = new Vector3(27f, 200f - index * 25, 0f);
+        Vector3 pos = new Vector3(27f, 180f - index * 25, 0f);
         string prefabName = "Origin";
         pos.x *= -1;
         GameObject prefabObj = (GameObject)Resources.Load("Prefabs/" + prefabName);
