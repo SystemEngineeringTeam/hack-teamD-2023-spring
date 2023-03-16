@@ -38,10 +38,12 @@ public class OperateObj : MonoBehaviour{
         SuggestObjManager returnObjManager = returnObj.GetComponent<SuggestObjManager>();
         returnObjManager.inputField.text = "";
 
+        Fetch fetch = new Fetch();
+        string[] suggestTexts = fetch.SyncQ(new string[]{"query1", "query2", "query3"});
+
         //test用重い処理
-        TestHeavyClass testHeavy = new TestHeavyClass();
-        string[] suggestTexts;
-        suggestTexts = await Task.Run(() => testHeavy.TestHeavyProcess(inputs));
+        //TestHeavyClass testHeavy = new TestHeavyClass();
+        //string[] suggestTexts = await Task.Run(() => testHeavy.TestHeavyProcess(inputs));
 
         //inputfieldとotherTextのテキストを変更する
         returnObjManager.inputField.text = suggestTexts[0];
@@ -50,6 +52,8 @@ public class OperateObj : MonoBehaviour{
 
         //吹き出しオブジェクトのリストに追加
         objManagerIns.suggestObjList.Add(returnObj);
+
+        await Task.Delay(50);
         
         //矢印リセット
         objManagerIns.ResetLineSprite();

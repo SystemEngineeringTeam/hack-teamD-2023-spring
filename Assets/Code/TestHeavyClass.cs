@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class TestHeavyClass{
+/*public class TestHeavyClass{
     public string[] TestHeavyProcess(string[] words){
         string temp = "";
         foreach(string i in words){
@@ -13,4 +13,4 @@ public class TestHeavyClass{
         Thread.Sleep(1500);
         return new string[]{"例1", "例2", "例3"};
     }
-}
+}*/
