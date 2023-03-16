@@ -65,4 +65,9 @@ public class ObjManager : MonoBehaviour{
         }
         ResetLineSprite();
     }
+    public void Reset(){
+        ClearObj(2);
+        SuggestObjManager firstObjManager = suggestObjList[0].GetComponent<SuggestObjManager>();
+        firstObjManager.inputField.text = "";
+    }
 }

@@ -34,16 +34,19 @@ public class OperateObj : MonoBehaviour{
         returnObj.name = "SuggestionObj" + index.ToString();
         returnObj.transform.position = pos + baseObject.transform.position;
 
+        //InputTextの初期値を""にする
+        SuggestObjManager returnObjManager = returnObj.GetComponent<SuggestObjManager>();
+        returnObjManager.inputField.text = "";
+
         //test用重い処理
         TestHeavyClass testHeavy = new TestHeavyClass();
         string[] suggestTexts;
         suggestTexts = await Task.Run(() => testHeavy.TestHeavyProcess(inputs));
 
         //inputfieldとotherTextのテキストを変更する
-        SuggestObjManager returnObjManagerIns = returnObj.GetComponent<SuggestObjManager>();
-        returnObjManagerIns.inputField.text = suggestTexts[0];
-        returnObjManagerIns.otherText1.text = suggestTexts[1];
-        returnObjManagerIns.otherText2.text = suggestTexts[2];
+        returnObjManager.inputField.text = suggestTexts[0];
+        returnObjManager.otherText1.text = suggestTexts[1];
+        returnObjManager.otherText2.text = suggestTexts[2];
 
         //吹き出しオブジェクトのリストに追加
         objManagerIns.suggestObjList.Add(returnObj);
