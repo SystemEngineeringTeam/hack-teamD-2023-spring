@@ -1,12 +1,7 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Collections;
-using System.Threading;
 
 public class Fetch
 {
