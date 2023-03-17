@@ -35,6 +35,8 @@ public class ClickObserver : MonoBehaviour{
             WhenClickedLine(clickedGameObject);
         }else if(clickedGameObject.name == "otherText1" || clickedGameObject.name == "otherText2"){
             WhenClickedOtherText(clickedGameObject);
+        }else if(clickedGameObject.name == "reset"){
+            WhenClickedReset(clickedGameObject);
         }
     }
 
@@ -42,9 +44,19 @@ public class ClickObserver : MonoBehaviour{
         Debug.Log("クリックされました:line");
         //親オブジェクト取得
         GameObject parentObj = clickedGameObject.transform.parent.gameObject;
+
+        //テキストが入力されていなければテキストを入力して下さいと入力して終了
+        SuggestObjManager clickedObjManager = parentObj.GetComponent<SuggestObjManager>();
+        string enteredText = clickedObjManager.inputField.text;
+        if(enteredText == ""){
+            clickedObjManager.inputField.text = "テキストを入力してください";
+            return;
+        }
+
         //親オブジェクトの名前から自分が何個目かを取得
         string numStr = parentObj.name;
         numStr = numStr.Remove(0, 13);
+
         //次のオブジェクトを生成と今までの入力の取得
         List<string> inputs = new List<string>();
         foreach(GameObject obj in objManagerIns.suggestObjList){
@@ -52,6 +64,7 @@ public class ClickObserver : MonoBehaviour{
             inputs.Add(temp.inputField.text);
         }
         objManagerIns.MakeSuggestionAsync(int.Parse(numStr) + 1, inputs.ToArray());
+        
         //矢印をラインにする
         objManagerIns.ArrowToLineSprite();
     }
@@ -74,5 +87,10 @@ public class ClickObserver : MonoBehaviour{
 
         //入れ替えた先のオブジェクト全削除
         objManagerIns.ClearObj(int.Parse(numStr) + 1);
+    }
+
+    void WhenClickedReset(GameObject clickedGameObject){
+        Debug.Log("クリックされました:" + clickedGameObject.name);
+        objManagerIns.Reset();
     }
 }

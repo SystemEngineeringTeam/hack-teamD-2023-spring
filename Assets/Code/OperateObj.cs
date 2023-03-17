@@ -17,7 +17,7 @@ public class OperateObj : MonoBehaviour{
     public async Task<GameObject> MakeSuggestionAsync(int index, string[] inputs){
         //プレハブフォルダからプレハブ生成(isrightがtrueなら右向き)
         string prefabName = "";
-        Vector3 pos = new Vector3(27f, 200f - index * 25, 0f);
+        Vector3 pos = new Vector3(27f, 180f - index * 25, 0f);
 
         //インデックスが奇数なら右向き
         if(index % 2 == 1){
@@ -34,19 +34,26 @@ public class OperateObj : MonoBehaviour{
         returnObj.name = "SuggestionObj" + index.ToString();
         returnObj.transform.position = pos + baseObject.transform.position;
 
+        //InputTextの初期値を""にする
+        SuggestObjManager returnObjManager = returnObj.GetComponent<SuggestObjManager>();
+        returnObjManager.inputField.text = "Now Loading...";
+
+        Fetch fetch = new Fetch();
+        string[] suggestTexts = await fetch.AsyncQ(new string[]{"query1", "query2", "query3"});
+
         //test用重い処理
-        TestHeavyClass testHeavy = new TestHeavyClass();
-        string[] suggestTexts;
-        suggestTexts = await Task.Run(() => testHeavy.TestHeavyProcess(inputs));
+        //TestHeavyClass testHeavy = new TestHeavyClass();
+        //string[] suggestTexts = await Task.Run(() => testHeavy.TestHeavyProcess(inputs));
 
         //inputfieldとotherTextのテキストを変更する
-        SuggestObjManager returnObjManagerIns = returnObj.GetComponent<SuggestObjManager>();
-        returnObjManagerIns.inputField.text = suggestTexts[0];
-        returnObjManagerIns.otherText1.text = suggestTexts[1];
-        returnObjManagerIns.otherText2.text = suggestTexts[2];
+        returnObjManager.inputField.text = suggestTexts[0];
+        returnObjManager.otherText1.text = suggestTexts[1];
+        returnObjManager.otherText2.text = suggestTexts[2];
 
         //吹き出しオブジェクトのリストに追加
         objManagerIns.suggestObjList.Add(returnObj);
+
+        await Task.Delay(50);
         
         //矢印リセット
         objManagerIns.ResetLineSprite();
@@ -57,7 +64,7 @@ public class OperateObj : MonoBehaviour{
     //最初の一個目用オーバーロード
     public GameObject MakeSuggestionAsync(int index){
         //プレハブフォルダからプレハブ生成(isrightがtrueなら右向き)
-        Vector3 pos = new Vector3(27f, 200f - index * 25, 0f);
+        Vector3 pos = new Vector3(27f, 180f - index * 25, 0f);
         string prefabName = "Origin";
         pos.x *= -1;
         GameObject prefabObj = (GameObject)Resources.Load("Prefabs/" + prefabName);
